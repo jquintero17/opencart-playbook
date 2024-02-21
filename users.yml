@@ -1,0 +1,7 @@
+---
+
+- name: Setup APJ Users
+  hosts: all
+  remote_user: ansible
+  roles:
+    - { role: users, tags: users }

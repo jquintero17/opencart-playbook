@@ -1,0 +1,46 @@
+---
+- name: Deploy CentOS VMs
+  hosts: all
+  gather_facts: false
+  connection: local
+  tasks:
+    - name: Create VM from template
+      vmware_guest:
+        hostname: "{{ vm_vsphere_host }}"
+        username: "{{ vm_vsphere_user }}"
+        password: "{{ vm_vsphere_password }}"
+        name: "{{ inventory_hostname }}"
+        template: "{{ vm_vsphere_template }}"
+        datacenter: "{{ vm_vsphere_datacenter }}"
+        folder: "{{ myvm_folder }}"
+        cluster: "{{ vm_cluster_name }}"
+        guest_id: centos64Guest
+        networks:
+        - name: "{{ myvm_network }}"
+          label: "Network adapter 1"
+          type: static
+          ip: "{{ ansible_host }}"
+          netmask: "{{ myvm_netmask }}"                              
+          gateway: "{{ myvm_gw }}"  
+          device_type: vmxnet3
+          start_connected: yes
+        disk:
+        - size_gb: 20
+          type: thin
+          datastore: "{{ vm_datastore }}"
+        hardware:
+          num_cpus: 1
+          memory_mb: "{{ myvm_memory | default(1024) }}"
+        customization:
+          hostname: "{{ inventory_hostname }}"
+          dns_servers:
+            - 10.28.121.193
+          domain: "{{ myvm_domain }}"
+        state: poweredon
+        validate_certs: False
+        wait_for_customization: yes
+        wait_for_ip_address: yes
+
+    - name: Wait for SSH before continuing...
+      local_action: wait_for port=22 host={{ ansible_host }} delay=30 timeout=180
+

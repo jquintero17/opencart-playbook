@@ -1,0 +1,44 @@
+[ztid:children]
+ztid_haproxy_vms
+ztid_wordpress_vms
+ztid_opencart_vms
+ztid_redis_vms
+
+[ztid:vars]
+ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+[restart:children]
+ztid_haproxy_vms
+ztid_wordpress_vms
+ztid_opencart_vms
+ztid_redis_vms
+
+[wordpress_server:children]
+ztid_wordpress_vms
+
+[opencart_server:children]
+ztid_opencart_vms
+
+[haproxy_fe:children]
+ztid_haproxy_vms
+
+[redis_server:children]
+ztid_redis_vms
+
+[ztid_redis_oc]
+ztid-redis01
+
+#POD01
+[ztid_haproxy_vms]
+ecomm-felb01 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-ecomm-front-end" ansible_host="192.168.54.5" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.54.1" myvm_folder="ecomm-prod"
+
+[ztid_wordpress_vms]
+ecomm-wp01 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-ecomm-app-tier" ansible_host="192.168.52.7" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.52.1" myvm_folder="ecomm-prod"
+ecomm-wp02 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-ecomm-app-tier" ansible_host="192.168.52.8" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.52.1" myvm_folder="ecomm-prod"
+
+[ztid_opencart_vms]
+ecomm-oc01 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-ecomm-app-tier" ansible_host="192.168.52.5" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.52.1" myvm_folder="ecomm-prod"
+ecomm-oc02 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-ecomm-app-tier" ansible_host="192.168.52.6" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.52.1" myvm_folder="ecomm-prod"
+
+[ztid_redis_vms]
+ecomm-redis01 myvm_disk="10" myvm_memory="2048" myvm_network="tme-daf-ecomm-app-tier" ansible_host="192.168.52.9" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.52.1" myvm_folder="ecomm-prod"

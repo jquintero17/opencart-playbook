@@ -1,0 +1,7 @@
+---
+- name: Deploy Secure Workload Agents
+  hosts: all
+  remote_user: ansible
+
+  roles:
+    - { role: deploy-agents, tags: tetration }

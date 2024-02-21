@@ -1,0 +1,46 @@
+- name: Wait for things to settle
+  pause:
+    seconds: 10
+
+- name: Install Percona repository
+  yum:
+#    name: http://www.percona.com/downloads/percona-release/redhat/0.1-6/percona-release-0.1-6.noarch.rpm
+    name: https://downloads.percona.com/downloads/percona-release/percona-release-1.0-25/redhat/percona-release-1.0-25.noarch.rpm
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+  become: yes
+  become_method: sudo
+
+- name: Update Percona release and GPG keys
+  yum:
+    name: percona-release
+    state: latest
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+  become: yes
+  become_method: sudo
+
+- name: Install Percona
+  yum:
+    name: ['Percona-XtraDB-Cluster-57', 'MySQL-python', 'perl-Digest-MD5']
+    state: present
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+  register: install_result
+  become: yes
+  become_method: sudo
+
+- name: Make sure mysql did not start before it is configured
+  service: name=mysql state=stopped
+  become: yes
+  become_method: sudo
+
+- name: Ensure log directories exists
+  file:
+    path: /var/log/mysql
+    state: directory
+    owner: mysql
+    group: mysql
+  become: yes
+  become_method: sudo

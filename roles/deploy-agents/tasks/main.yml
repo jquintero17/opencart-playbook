@@ -1,0 +1,45 @@
+---
+
+- name: Remove existing sensor if it exists
+  yum:
+    name: tet-sensor
+    state: absent
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+  become: yes
+  become_method: sudo
+
+- name: Cleanup installation folder
+  file:
+    state: absent
+    path: /usr/local/tet
+  become: yes
+  become_method: sudo
+
+- name: Ensure dependencies installed
+  yum:
+    name: "{{ packages }}"
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+    packages:
+    - unzip
+    - lsof
+    state: present
+  become: yes
+  become_method: sudo
+
+- name: Copy RPM
+  copy: 
+    src: "{{ sensor_file }}"
+    dest: /tmp/
+    owner: ansible
+    group: ansible
+    mode: u+x
+    follow: no
+  become: yes
+  become_method: sudo
+
+- name: Install Secure Workload agent via installer script
+  shell: "{{ sensor_file }}"
+  become: yes
+  become_method: sudo

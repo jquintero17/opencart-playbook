@@ -1,0 +1,17 @@
+---
+
+- name: Remove existing sensor
+  yum:
+    name: tet-sensor
+    state: absent
+  vars:
+    ansible_python_interpreter: /usr/bin/python
+  become: yes
+  become_method: sudo
+
+- name: Remove installation folder
+  file:
+    state: absent
+    path: /usr/local/tet
+  become: yes
+  become_method: sudo

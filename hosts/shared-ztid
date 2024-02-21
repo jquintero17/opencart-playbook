@@ -1,0 +1,31 @@
+#[tetration:children]
+#percona_vms
+#nfs_vms
+#haproxy_vms
+
+[restart:children]
+percona_vms
+nfs_vms
+haproxy_vms
+
+[percona_server:children]
+percona_vms
+
+[nfs_server:children]
+nfs_vms
+
+[haproxy_be:children]
+haproxy_vms
+
+#TA-PODs/Shared
+[percona_vms]
+ecomm-sql01 myvm_disk="10" myvm_memory="2048" myvm_network="tme-daf-ecomm-db-tier" ansible_host="192.168.53.5" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.53.1" myvm_folder="ecomm-prod"
+ecomm-sql02 myvm_disk="10" myvm_memory="2048" myvm_network="tme-daf-ecomm-db-tier" ansible_host="192.168.53.6" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.53.1" myvm_folder="ecomm-prod"
+ecomm-sql03 myvm_disk="10" myvm_memory="2048" myvm_network="tme-daf-ecomm-db-tier" ansible_host="192.168.53.7" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.53.1" myvm_folder="ecomm-prod"
+
+[nfs_vms]
+ecomm-nfs01 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-shared-services" ansible_host="192.168.51.6" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.51.1" myvm_folder="ecomm-prod"
+
+[haproxy_vms]
+ecomm-belb01 myvm_disk="10" myvm_memory="1024" myvm_network="tme-daf-ecomm-back-end" ansible_host="192.168.55.5" myvm_netmask="255.255.255.0" myvm_domain="tme-daf.lab" myvm_gw="192.168.55.1" myvm_folder="ecomm-prod"
+

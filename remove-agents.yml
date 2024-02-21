@@ -1,0 +1,7 @@
+---
+- name: Delete Secure Workload Agents
+  hosts: all
+  remote_user: ansible
+
+  roles:
+    - { role: remove-agents, tags: tetration }

@@ -1,0 +1,36 @@
+---
+
+mysql_ansible_user: "ansible"
+mysql_ansible_password: "s3cret"
+mysql_server: "192.168.53.5"
+
+sensor_file: /tmp/tetration_installer_xfd_enforcer_linux_tuvok.sh
+
+ntp_servers: [
+  "192.168.51.5"
+]
+
+dns_servers: [
+  "192.168.51.50"
+]
+
+nfs_server: 192.168.51.6
+nfs_exports: [
+  "/nfs/web/ztid 192.168.52.0/24(rw,fsid=0,sync,no_root_squash)"
+]
+
+# This is used for the nginx server configuration, but access to the
+# WordPress site is not restricted by a named host.
+nginx_port: 80
+vm_vsphere_host: daf-vcenter7-01.insbu.lab
+vm_vsphere_user: administrator@vsphere.local
+vm_vsphere_password: Ins3965!
+vm_vsphere_datacenter: daf-vcenter7-01.insbu.lab
+vm_vsphere_template: ansible-centos-template
+vm_esx_host: fch2036v2fr.sjc15-174.insbu.net
+vm_datastore: fch2036v2fr.sjc15-174.insbu.net-datastore2
+vm_network: "tme-daf-ecomm-management"
+#vm_cluster_name: daf
+vm_memory: 2048
+vm_notes: Created by Ansible
+dumpfacts: false
